@@ -1,2 +1,2 @@
 # fnv-hasher
-nice Fowler-Noll-Vo hasher to convert strings into a int32 for faster computing 
+Nice Fowler-Noll-Vo hasher to convert strings into a int32 for faster computing I personaly use this in my work.
