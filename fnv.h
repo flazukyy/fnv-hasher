@@ -1,11 +1,11 @@
-#ifndef SHASH
-#define SHASH
+#ifndef FNV
+#define FNV
 #include <stdint.h>
 #include <string_view>
 
 namespace fnv {
-	using hash32_t = int32_t;
-	using hash64_t = int64_t;
+	using hash32_t = uint32_t;
+	using hash64_t = uint64_t;
 
 	inline constexpr hash32_t FNV32_BASE{ 2166136261 };
 	inline constexpr hash32_t FNV32_OFFSET{ 16777619u };
@@ -13,44 +13,40 @@ namespace fnv {
 	inline constexpr hash64_t FNV64_OFFSET{ 1099511628211 };
 
 	[[nodiscard]] constexpr hash32_t hash(std::string_view str) noexcept {
-		hash32_t _hash{ FNV32_BASE };
-		for (unsigned char _char : str) {
-			_hash *= FNV32_OFFSET;
-			_hash ^= _char;
-		}
+		hash32_t tmp{ FNV32_BASE };
 
-		return _hash;
+		for (char c : str) {
+			tmp *= FNV32_OFFSET;
+			tmp ^= c;
+		}
 	}
 
-	[[nodiscard]] constexpr hash64_t hash64(std::string_view str) noexcept {
-		hash64_t _hash{ FNV64_BASE };
-		for (unsigned char _char : str) {
-			_hash *= FNV64_OFFSET;
-			_hash ^= _char;
-		}
+	[[nodiscard]] constexpr hash32_t hash64(std::string_view str) noexcept {
+		hash32_t tmp{ FNV32_BASE };
 
-		return _hash;
+		for (char c : str) {
+			tmp *= FNV64_OFFSET;
+			tmp ^= c;
+		}
 	}
 
 	namespace a1 {
 		[[nodiscard]] constexpr hash32_t hash(std::string_view str) noexcept {
-			hash32_t _hash{ FNV32_BASE };
-			for (unsigned char _char : str) {
-				_hash ^= _char;
-				_hash *= FNV32_OFFSET;
-			}
+			hash32_t tmp{ FNV32_BASE };
 
-			return _hash;
+			for (char c : str) {
+				tmp ^= c;
+				tmp *= FNV32_OFFSET;
+			}
 		}
 
-		[[nodiscard]] constexpr hash64_t hash64(std::string_view str) noexcept {
-			hash64_t _hash{ FNV64_BASE };
-			for (unsigned char _char : str) {
-				_hash ^= _char;
-				_hash *= FNV64_OFFSET;
-			}
+		[[nodiscard]] constexpr hash32_t hash64(std::string_view str) noexcept {
+			hash32_t tmp{ FNV32_BASE };
 
-			return _hash;
+			for (char c : str) {
+				tmp ^= c;
+				tmp *= FNV64_OFFSET;
+			}
 		}
 	}
 }
